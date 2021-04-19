@@ -3,25 +3,23 @@ import React from "react";
 import { DoubleSide } from "three";
 
 interface Props {
-  rows: number;
-  cols: number;
+  boardSize: number;
   tileSize: number;
   margin: number;
 }
 
 export const FloorPlane: React.FC<Props> = ({
-  rows,
-  cols,
+  boardSize,
   tileSize,
   margin,
 }) => {
   return (
     <mesh receiveShadow position={[0, -0.01, 0]} rotation={[Math.PI / 2, 0, 0]}>
-      {Array(rows * cols)
+      {Array(boardSize * boardSize)
         .fill(0)
         .map((_, i) => {
-          const x = (i % rows) * tileSize;
-          const y = Math.floor(i / rows) * tileSize;
+          const x = (i % boardSize) * tileSize;
+          const y = Math.floor(i / boardSize) * tileSize;
           return (
             <group key={i}>
               <Plane

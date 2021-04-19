@@ -1,30 +1,30 @@
-import React, { Suspense, useMemo } from "react";
+import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Model, ModelType } from "./Model";
+import { Model } from "./Model";
 import { FloorPlane } from "./FloorPlane";
-import { SegregationEngine } from "engine-wasm";
+import { TStore, useStore } from "../store";
 
-interface Props {}
+interface Props {
+  className: string;
+}
 
 const PlaneConfig = {
-  rows: 20,
-  cols: 20,
   tileSize: 3,
   margin: 0.1,
 };
 
+const selector = ({ boardSize, positions, modelTypes }: TStore) => ({
+  boardSize,
+  positions,
+  modelTypes,
+});
+
 const CanvasContent: React.FC = () => {
+  const { boardSize, positions, modelTypes } = useStore(selector);
   // const ref = useRef();
   // useHelper(ref, PointLightHelper, 2, "yellow");
-  const xOffset = ((PlaneConfig.rows - 1) * PlaneConfig.tileSize) / 2;
-  const yOffset = ((PlaneConfig.cols - 1) * PlaneConfig.tileSize) / 2;
-  const { engine, positions, modelTypes } = useMemo(() => {
-    const engine = new SegregationEngine(PlaneConfig.rows, PlaneConfig.cols, 0.5, 0.75);
-    const positions = engine.get_positions() as Array<number>[];
-    const modelTypes = engine.get_agent_types() as string[];
-    return { engine, positions, modelTypes };
-  }, []);
+  const offset = ((boardSize - 1) * PlaneConfig.tileSize) / 2;
 
   return (
     <>
@@ -43,8 +43,8 @@ const CanvasContent: React.FC = () => {
       />
 
       <Suspense fallback={null}>
-        <group position={[-xOffset, 0, -yOffset]}>
-          <FloorPlane {...PlaneConfig} />
+        <group position={[-offset, 0, -offset]}>
+          <FloorPlane boardSize={boardSize} {...PlaneConfig} />
           {positions.map((o, i) => (
             <Model
               key={i}
@@ -64,9 +64,9 @@ const CanvasContent: React.FC = () => {
   );
 };
 
-export const BaseCanvas: React.FC<Props> = () => {
+export const BaseCanvas: React.FC<Props> = ({ className }) => {
   return (
-    <Canvas className="bg-gray-900" shadows>
+    <Canvas className={className} shadows>
       <CanvasContent />
     </Canvas>
   );

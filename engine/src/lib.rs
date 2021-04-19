@@ -67,17 +67,17 @@ impl Agent {
 pub enum AgentType {
     Man1,
     Man2,
-    Woman1,
-    Woman2,
+    // Woman1,
+    // Woman2,
 }
 
 impl AgentType {
     fn new_random(rng: &mut ThreadRng) -> Self {
-        match rng.gen_range(0..=4) {
+        match rng.gen_range(0..=2) {
             0 => AgentType::Man1,
-            1 => AgentType::Man2,
-            2 => AgentType::Woman1,
-            _ => AgentType::Woman2,
+            _ => AgentType::Man2,
+            // 2 => AgentType::Woman1,
+            // _ => AgentType::Woman2,
         }
     }
 }

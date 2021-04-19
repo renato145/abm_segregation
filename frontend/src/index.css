@@ -6,12 +6,12 @@
 
 @layer base {
   body {
-    @apply text-gray-900 antialiased;
+    @apply text-gray-900 antialiased bg-gray-700;
     /* font-custom text-lg; */
   }
 
   a {
-    @apply text-blue-600 hover:text-blue-800 transition;
+    @apply text-gray-500 underline hover:text-gray-900 transition;
   }
 
   button {
