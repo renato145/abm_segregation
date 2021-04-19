@@ -21,9 +21,18 @@ type GLTFResult = GLTF & {
   };
 };
 
-export const Man1 = (props: JSX.IntrinsicElements["group"]) => {
+export enum ModelType {
+  Man1 = "/assets/man1.gltf",
+  Man2 = "/assets/man2.gltf",
+  Woman1 = "/assets/woman1.gltf",
+  Woman2 = "/assets/woman2.gltf",
+}
+
+type Props = { modelType: keyof typeof ModelType } & JSX.IntrinsicElements["group"];
+
+export const Model = ({ modelType, ...props }: Props) => {
   const group = useRef<THREE.Group>();
-  const { nodes } = useGLTF("/assets/man1.gltf") as GLTFResult;
+  const { nodes } = useGLTF(ModelType[modelType]) as GLTFResult;
 
   return (
     <group ref={group} {...props} dispose={null} castShadow>
@@ -68,3 +77,6 @@ export const Man1 = (props: JSX.IntrinsicElements["group"]) => {
 };
 
 useGLTF.preload("/assets/man1.gltf");
+useGLTF.preload("/assets/man2.gltf");
+useGLTF.preload("/assets/woman1.gltf");
+useGLTF.preload("/assets/woman2.gltf");
