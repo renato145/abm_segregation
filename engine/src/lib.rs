@@ -1,3 +1,4 @@
+use serde::Serialize;
 use rand::prelude::{IteratorRandom, Rng, ThreadRng};
 
 #[derive(Debug)]
@@ -35,11 +36,11 @@ impl Engine {
         self.agents.len()
     }
 
-    fn setup(&mut self) {
+    pub fn setup(&mut self) {
         todo!()
     }
 
-    fn step(&mut self) {
+    pub fn step(&mut self) {
         todo!()
     }
 }
@@ -62,7 +63,7 @@ impl Agent {
     }
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub enum AgentType {
     Man1,
     Man2,
