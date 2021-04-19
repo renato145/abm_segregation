@@ -40,6 +40,10 @@ impl SegregationEngine {
             .collect::<Vec<_>>();
         JsValue::from_serde(&types).unwrap()
     }
+
+    pub fn step(&mut self) {
+        self.engine.step();
+    }
 }
 
 #[cfg(test)]

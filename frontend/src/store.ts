@@ -6,16 +6,17 @@ export type TStore = {
   boardSize: number;
   density: number;
   similarity: number;
-  positions: Array<number>[];
+  positions: number[][];
   modelTypes: string[];
   setupEngine: () => void;
+  step: () => void;
 };
 
 export const useStore = create<TStore>((set, get) => ({
   boardSize: 20,
   density: 0.65,
   similarity: 30,
-  positions: Array(),
+  positions: [],
   modelTypes: [],
   setupEngine: () => {
     set(({ boardSize, density, similarity }) => {
@@ -33,5 +34,11 @@ export const useStore = create<TStore>((set, get) => ({
         modelTypes,
       };
     });
+  },
+  step: () => {
+    const engine = get().engine;
+    if (engine === undefined) return;
+    engine.step();
+    set({ positions: engine.get_positions() });
   },
 }));

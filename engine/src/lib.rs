@@ -139,8 +139,8 @@ impl Agent {
 
     /// Gets coordinates of the squares around this `Agent`.
     pub fn get_neighboor(&self, range: usize, rows: usize, cols: usize) -> Vec<(usize, usize)> {
-        let col_range = self.x.checked_sub(range).unwrap_or(0)..=(self.x + range).min(cols);
-        let row_range = self.y.checked_sub(range).unwrap_or(0)..=(self.y + range).min(rows);
+        let col_range = self.x.checked_sub(range).unwrap_or(0)..(self.x + range).min(cols);
+        let row_range = self.y.checked_sub(range).unwrap_or(0)..(self.y + range).min(rows);
         col_range
             .map(|i| row_range.clone().map(move |j| (i, j)))
             .flatten()

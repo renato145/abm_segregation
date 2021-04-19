@@ -5,15 +5,24 @@ interface Props {
   className: string;
 }
 
-const selector = ({ setupEngine, boardSize, density, similarity }: TStore) => ({
+const selector = ({
   setupEngine,
+  step,
+  boardSize,
+  density,
+  similarity,
+}: TStore) => ({
+  setupEngine,
+  step,
   boardSize,
   density,
   similarity,
 });
 
 export const Controls: React.FC<Props> = ({ className }) => {
-  const { setupEngine, boardSize, density, similarity } = useStore(selector);
+  const { setupEngine, step, boardSize, density, similarity } = useStore(
+    selector
+  );
 
   return (
     <div className={className}>
@@ -21,7 +30,9 @@ export const Controls: React.FC<Props> = ({ className }) => {
         <button className="flex-1 btn" onClick={setupEngine}>
           Setup
         </button>
-        <button className="flex-1 btn">1-step</button>
+        <button className="flex-1 btn" onClick={step}>
+          1-step
+        </button>
         <button className="flex-1 btn">Run</button>
       </div>
       <p className="mt-4">Board size = {boardSize}</p>
