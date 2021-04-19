@@ -1,8 +1,9 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Man1 } from "./Man1";
 import { FloorPlane } from "./FloorPlane";
+import { SegregationEngine } from "engine-wasm";
 
 interface Props {}
 
@@ -13,9 +14,18 @@ const PlaneConfig = {
   margin: 0.1,
 };
 
+type Positions = Array<number>[];
+
 const CanvasContent: React.FC = () => {
+  // const ref = useRef();
+  // useHelper(ref, PointLightHelper, 2, "yellow");
   const xOffset = ((PlaneConfig.rows - 1) * PlaneConfig.tileSize) / 2;
   const yOffset = ((PlaneConfig.cols - 1) * PlaneConfig.tileSize) / 2;
+  const { engine, positions } = useMemo(() => {
+    const engine = new SegregationEngine(8, 8, 0.5, 0.75);
+    const positions = engine.get_positions() as Positions;
+    return { engine, positions };
+  }, []);
 
   return (
     <>
@@ -25,19 +35,28 @@ const CanvasContent: React.FC = () => {
         fov={50}
         zoom={1.0}
       />
-      <ambientLight />
-      {/* <pointLight position={[0, 0, 4]} /> */}
+      <ambientLight intensity={0.25} />
+      <pointLight
+        // ref={ref}
+        castShadow
+        position={[5, 30, 15]}
+        intensity={0.75}
+      />
+
       <Suspense fallback={null}>
-        <group position={[-xOffset, yOffset, 0]}>
+        <group position={[-xOffset, 0, -yOffset]}>
           <FloorPlane {...PlaneConfig} />
-          <Man1
-            scale={0.25}
-            position={[PlaneConfig.tileSize, 0, 3 * PlaneConfig.tileSize]}
-          />
-          <Man1
-            scale={0.25}
-            position={[5 * PlaneConfig.tileSize, 0, 6 * PlaneConfig.tileSize]}
-          />
+          {positions.map((o, i) => (
+            <Man1
+              key={i}
+              scale={0.25}
+              position={[
+                o[0] * PlaneConfig.tileSize,
+                0,
+                o[1] * PlaneConfig.tileSize,
+              ]}
+            />
+          ))}
         </group>
       </Suspense>
       <OrbitControls />

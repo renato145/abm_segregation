@@ -26,7 +26,7 @@ export const Man1 = (props: JSX.IntrinsicElements["group"]) => {
   const { nodes } = useGLTF("/assets/man1.gltf") as GLTFResult;
 
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} castShadow>
       <mesh
         castShadow
         receiveShadow
@@ -67,4 +67,4 @@ export const Man1 = (props: JSX.IntrinsicElements["group"]) => {
   );
 };
 
-useGLTF.preload("/man1.gltf");
+useGLTF.preload("/assets/man1.gltf");
