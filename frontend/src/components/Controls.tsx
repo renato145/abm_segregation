@@ -38,10 +38,7 @@ export const Controls: React.FC<Props> = ({ className }) => {
   return (
     <div className={className}>
       <div className="flex flex-wrap space-x-2 justify-between">
-        <button
-          className="flex-1 btn"
-          onClick={setupEngine}
-        >
+        <button className="flex-1 btn" onClick={setupEngine}>
           Setup
         </button>
         <button
@@ -62,10 +59,12 @@ export const Controls: React.FC<Props> = ({ className }) => {
           Run
         </button>
       </div>
-      <Slider className="mt-2" />
-      <p className="mt-4">Board size = {boardSize}</p>
-      <p>Density slider = {density}</p>
-      <p>% Similarity wanted slider = {similarity}</p>
+      <div className="mt-4 flex flex-col space-y-4">
+        <Slider title="Ticks per second" />
+        <Slider title="Board size" />
+        <Slider title="Density" />
+        <Slider title="Similarity wanted" />
+      </div>
     </div>
   );
 };

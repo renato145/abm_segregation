@@ -8,7 +8,7 @@ interface Props {
 export const Description: React.FC<Props> = ({ className }) => {
   return (
     <div className={className}>
-      <div className="flex flex-col px-4 pt-3">
+      <div className="flex flex-col px-2 lg:px-4 pt-2 lg:pt-3">
         <p className="text-2xl font-bold">Segregation Model</p>
         <p className="mt-4 text-sm text-justify">
           Some description...
