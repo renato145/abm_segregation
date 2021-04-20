@@ -115,6 +115,7 @@ impl Engine {
             return;
         }
         self.move_unhappy_agents();
+        self.update_agents();
     }
 }
 
@@ -139,8 +140,8 @@ impl Agent {
 
     /// Gets coordinates of the squares around this `Agent`.
     pub fn get_neighboor(&self, range: usize, rows: usize, cols: usize) -> Vec<(usize, usize)> {
-        let col_range = self.x.checked_sub(range).unwrap_or(0)..(self.x + range).min(cols);
-        let row_range = self.y.checked_sub(range).unwrap_or(0)..(self.y + range).min(rows);
+        let col_range = (self.x - range.min(self.x))..=(self.x + range).min(cols - 1);
+        let row_range = (self.y - range.min(self.y))..=(self.y + range).min(rows - 1);
         col_range
             .map(|i| row_range.clone().map(move |j| (i, j)))
             .flatten()
@@ -158,7 +159,7 @@ pub enum AgentType {
 
 impl AgentType {
     fn new_random(rng: &mut ThreadRng) -> Self {
-        match rng.gen_range(0..=2) {
+        match rng.gen_range(0..=1) {
             0 => AgentType::Man1,
             _ => AgentType::Man2,
             // 2 => AgentType::Woman1,
@@ -184,5 +185,17 @@ mod tests {
         let tst = &engine.agents[0];
         let res = tst.get_neighboor(1, engine.rows, engine.cols);
         println!("Agent ({} {}): {:?}", tst.x, tst.y, res);
+    }
+
+    #[test]
+    fn step() {
+        let mut engine = Engine::new(8, 8, 0.5, 0.7);
+        for _ in 0..100 {
+            engine.step();
+            let x = engine.agents.iter().map(|o| o.x).max().unwrap();
+            let y = engine.agents.iter().map(|o| o.y).max().unwrap();
+            assert!(x < 8, "x < 8 (x={})", x);
+            assert!(y < 8, "y < 8 (y={})", y);
+        }
     }
 }

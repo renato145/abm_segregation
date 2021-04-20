@@ -1,5 +1,13 @@
 import React from "react";
-import { BoardState, TICKS_INFO, TStore, useStore } from "../store";
+import {
+  BoardState,
+  BOARD_SIZE_DEFAULTS,
+  DENSITY_DEFAULTS,
+  SIMILARITY_DEFAULTS,
+  TICKS_INFO,
+  TStore,
+  useStore,
+} from "../store";
 import { Slider } from "./Slider";
 
 interface Props {
@@ -12,8 +20,11 @@ const selector = ({
   ticksPerSecond,
   setTicksPerSecond,
   boardSize,
+  setBoardSize,
   density,
+  setDensity,
   similarity,
+  setSimilarity,
   boardState,
   toogleRun,
 }: TStore) => ({
@@ -22,8 +33,11 @@ const selector = ({
   ticksPerSecond,
   setTicksPerSecond,
   boardSize,
+  setBoardSize,
   density,
+  setDensity,
   similarity,
+  setSimilarity,
   boardState,
   toogleRun,
 });
@@ -35,8 +49,11 @@ export const Controls: React.FC<Props> = ({ className }) => {
     ticksPerSecond,
     setTicksPerSecond,
     boardSize,
+    setBoardSize,
     density,
+    setDensity,
     similarity,
+    setSimilarity,
     boardState,
     toogleRun,
   } = useStore(selector);
@@ -55,7 +72,11 @@ export const Controls: React.FC<Props> = ({ className }) => {
           1-step
         </button>
         <button
-          className={`flex-1 btn ${boardState === BoardState.Running ? "bg-green-600 hover:bg-red-700" : ""}`}
+          className={`flex-1 btn ${
+            boardState === BoardState.Running
+              ? "bg-green-600 hover:bg-red-700"
+              : ""
+          }`}
           onClick={toogleRun}
           disabled={
             boardState === BoardState.Empty ||
@@ -66,18 +87,40 @@ export const Controls: React.FC<Props> = ({ className }) => {
         </button>
       </div>
       <div className="mt-4 flex flex-col space-y-4">
-        {/* Ticks per second: min-> 5 seconds per tick... max -> 10 ticks per second*/}
         <Slider
           title="Ticks per second"
           min={0}
           max={TICKS_INFO.max * 2}
-          value={TICKS_INFO.max}
+          defaultValue={TICKS_INFO.max + TICKS_INFO.default}
           showValue={ticksPerSecond}
           onChange={setTicksPerSecond}
         />
-        <Slider title="Board size" />
-        <Slider title="Density" />
-        <Slider title="Similarity wanted" />
+        <Slider
+          title="Board size"
+          min={BOARD_SIZE_DEFAULTS.min}
+          max={BOARD_SIZE_DEFAULTS.max}
+          defaultValue={boardSize}
+          showValue={boardSize}
+          onChange={setBoardSize}
+        />
+        <Slider
+          title="Density"
+          min={DENSITY_DEFAULTS.min}
+          max={DENSITY_DEFAULTS.max}
+          step={0.01}
+          defaultValue={density}
+          showValue={density}
+          onChange={setDensity}
+        />
+        <Slider
+          title="Similarity wanted"
+          min={SIMILARITY_DEFAULTS.min}
+          max={SIMILARITY_DEFAULTS.max}
+          step={0.01}
+          defaultValue={similarity}
+          showValue={similarity}
+          onChange={setSimilarity}
+        />
       </div>
     </div>
   );

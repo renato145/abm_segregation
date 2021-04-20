@@ -13,8 +13,11 @@ export type TStore = {
   ticksPerSecond: number;
   setTicksPerSecond: (x: number) => void;
   boardSize: number;
+  setBoardSize: (x: number) => void;
   density: number;
+  setDensity: (x: number) => void;
   similarity: number;
+  setSimilarity: (x: number) => void;
   positions: number[][];
   modelTypes: string[];
   boardState: BoardState;
@@ -26,10 +29,29 @@ export type TStore = {
 export const TICKS_INFO = {
   min: 0.2, // 5 seconds for 1 tick
   max: 20, // 20 ticks per second
+  default: 5,
+};
+
+export const BOARD_SIZE_DEFAULTS = {
+  min: 4,
+  max: 30,
+  default: 15,
+};
+
+export const DENSITY_DEFAULTS = {
+  min: 0.1,
+  max: 0.99,
+  default: 0.6,
+};
+
+export const SIMILARITY_DEFAULTS = {
+  min: 0,
+  max: 1,
+  default: 0.3,
 };
 
 export const useStore = create<TStore>((set, get) => ({
-  ticksPerSecond: 1,
+  ticksPerSecond: TICKS_INFO.default,
   setTicksPerSecond: (x) => {
     const ticksPerSecond =
       x <= TICKS_INFO.max
@@ -40,9 +62,12 @@ export const useStore = create<TStore>((set, get) => ({
         : x - TICKS_INFO.max;
     set({ ticksPerSecond });
   },
-  boardSize: 20,
-  density: 0.65,
-  similarity: 30,
+  boardSize: BOARD_SIZE_DEFAULTS.default,
+  setBoardSize: (x) => set({ boardSize: x }),
+  density: DENSITY_DEFAULTS.default,
+  setDensity: (x) => set({ density: x }),
+  similarity: SIMILARITY_DEFAULTS.default,
+  setSimilarity: (x) => set({ similarity: x }),
   positions: [],
   modelTypes: [],
   boardState: BoardState.Empty,
@@ -67,8 +92,11 @@ export const useStore = create<TStore>((set, get) => ({
   step: () => {
     const engine = get().engine;
     if (engine === undefined) return;
-    engine.step();
-    set({ positions: engine.get_positions() });
+    const finished = engine.step();
+    set(({ boardState }) => ({
+      positions: engine.get_positions(),
+      boardState: finished ? BoardState.Finished : boardState,
+    }));
   },
   toogleRun: () =>
     set(({ boardState }) => ({

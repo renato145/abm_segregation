@@ -7,7 +7,7 @@ interface Props {
   min?: number;
   max?: number;
   step?: number;
-  value?: number;
+  defaultValue?: number;
   onChange?: (value: number) => void;
 }
 
@@ -18,7 +18,7 @@ export const Slider: React.FC<Props> = ({
   min = 1,
   max = 100,
   step = 1,
-  value = 50,
+  defaultValue = 50,
   onChange = () => {},
 }) => {
   return (
@@ -38,7 +38,7 @@ export const Slider: React.FC<Props> = ({
           min={min}
           max={max}
           step={step}
-          defaultValue={value}
+          defaultValue={defaultValue}
           onChange={({ target }) => onChange(+target.value)}
         />
       </div>

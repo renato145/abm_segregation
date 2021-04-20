@@ -41,8 +41,9 @@ impl SegregationEngine {
         JsValue::from_serde(&types).unwrap()
     }
 
-    pub fn step(&mut self) {
+    pub fn step(&mut self) -> bool {
         self.engine.step();
+        self.engine.finished
     }
 }
 
