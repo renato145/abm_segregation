@@ -43,6 +43,10 @@
   .btn-lg {
     @apply px-6 py-2 text-lg;
   }
+
+  .slider::-webkit-slider-thumb {
+    @apply appearance-none h-5 w-2 bg-gray-500 hover:bg-green-600 ring-2 ring-gray-500 rounded shadow;
+  }
 }
 
 @layer utilities {
@@ -52,7 +56,7 @@
   */
 }
 
-.tick line {
+/* .tick line {
   stroke-opacity: 0.35;
   stroke-dasharray: 1;
-}
+} */

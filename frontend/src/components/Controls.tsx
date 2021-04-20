@@ -1,5 +1,6 @@
 import React from "react";
 import { BoardState, TStore, useStore } from "../store";
+import { Slider } from "./Slider";
 
 interface Props {
   className: string;
@@ -61,6 +62,7 @@ export const Controls: React.FC<Props> = ({ className }) => {
           Run
         </button>
       </div>
+      <Slider className="mt-2" />
       <p className="mt-4">Board size = {boardSize}</p>
       <p>Density slider = {density}</p>
       <p>% Similarity wanted slider = {similarity}</p>
