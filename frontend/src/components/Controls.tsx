@@ -76,6 +76,10 @@ export const Controls: React.FC<Props> = ({ className }) => {
             boardState === BoardState.Running
               ? "bg-green-600 hover:bg-red-700"
               : ""
+          } ${
+            boardState === BoardState.Finished
+              ? "disabled:opacity-100 disabled:bg-green-600"
+              : ""
           }`}
           onClick={toogleRun}
           disabled={
@@ -83,7 +87,11 @@ export const Controls: React.FC<Props> = ({ className }) => {
             boardState === BoardState.Finished
           }
         >
-          {boardState === BoardState.Running ? "Stop" : "Run"}
+          {boardState === BoardState.Finished
+            ? "Finished!"
+            : boardState === BoardState.Running
+            ? "Stop"
+            : "Run"}
         </button>
       </div>
       <div className="mt-4 flex flex-col space-y-4">

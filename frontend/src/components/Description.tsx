@@ -11,7 +11,7 @@ export const Description: React.FC<Props> = ({ className }) => {
       <div className="flex flex-col px-2 lg:px-4 pt-2 lg:pt-3">
         <p className="text-2xl font-bold">Segregation Model</p>
         <p className="mt-4 text-sm text-justify">
-          Some description...
+          TODO: Some description{" "}
           {/* This project models the behavior of two types of agents in a
           neighborhood. The orange agents and blue agents get along with one
           another. But each agent wants to make sure that it lives near some of
@@ -19,14 +19,14 @@ export const Description: React.FC<Props> = ({ className }) => {
           orange agents, and each blue agent wants to live near at least some
           blue agents. The simulation shows how these individual preferences
           ripple through the neighborhood, leading to large-scale patterns. */}
-          <a
+          {/* <a
             className="font-bold"
             href="http://ccl.northwestern.edu/netlogo/models/Segregation"
             target="_black"
             rel="noopener"
           >
             Wilensky, U. (1997). NetLogo Segregation model
-          </a>
+          </a> */}
         </p>
         <Controls className="mt-4" />
         {/* <Plots /> */}
