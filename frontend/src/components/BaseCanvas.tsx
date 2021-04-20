@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Model } from "./Model";
 import { FloorPlane } from "./FloorPlane";
-import { TStore, useStore } from "../store";
+import { BoardState, TStore, useStore } from "../store";
 
 interface Props {
   className: string;
@@ -14,17 +14,45 @@ const PlaneConfig = {
   margin: 0.1,
 };
 
-const selector = ({ boardSize, positions, modelTypes }: TStore) => ({
+const selector = ({
   boardSize,
   positions,
   modelTypes,
+  boardState,
+  ticksPerSecond,
+  step,
+}: TStore) => ({
+  boardSize,
+  positions,
+  modelTypes,
+  boardState,
+  ticksPerSecond,
+  step,
 });
 
 const CanvasContent: React.FC = () => {
-  const { boardSize, positions, modelTypes } = useStore(selector);
+  const {
+    boardSize,
+    positions,
+    modelTypes,
+    boardState,
+    ticksPerSecond,
+    step,
+  } = useStore(selector);
   // const ref = useRef();
   // useHelper(ref, PointLightHelper, 2, "yellow");
   const offset = ((boardSize - 1) * PlaneConfig.tileSize) / 2;
+
+  // useFrame(({ clock: { elapsedTime } }) => {
+  useFrame(({ clock }) => {
+    if (
+      boardState === BoardState.Running &&
+      clock.elapsedTime > 1 / ticksPerSecond
+    ) {
+      step();
+      clock.start();
+    }
+  });
 
   return (
     <>
