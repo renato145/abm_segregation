@@ -1,0 +1,2 @@
+(this.webpackJsonpfrontend=this.webpackJsonpfrontend||[]).push([[0],[function(n,r,t){"use strict";t.r(r),Promise.all([t.e(2),t.e(3)]).then(t.bind(null,1)).catch((function(n){return console.error("Error importing `setup.tsx`:",n)}))}],[[0,1]]]);
+//# sourceMappingURL=main.982847a7.chunk.js.map
