@@ -28,11 +28,10 @@
     "start": "craco start",
     "build": "craco build",
     "build-verbose": "craco build --verbose",
-    "postbuild-verbose": "./fix_worker.sh",
     "test": "craco test",
     "eject": "react-scripts eject",
     "serve": "serve -s build",
-    "predeploy": "npm run build && ./fix_worker.sh",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
