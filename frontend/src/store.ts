@@ -67,7 +67,11 @@ export const useStore = create<TStore>((set, get) => ({
   density: DENSITY_DEFAULTS.default,
   setDensity: (x) => set({ density: x }),
   similarity: SIMILARITY_DEFAULTS.default,
-  setSimilarity: (x) => set({ similarity: x }),
+  setSimilarity: (x) =>
+    set(({ engine }) => {
+      if (engine !== undefined) engine.set_similarity(x);
+      return { similarity: x };
+    }),
   positions: [],
   modelTypes: [],
   boardState: BoardState.Empty,

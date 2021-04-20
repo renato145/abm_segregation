@@ -45,6 +45,10 @@ impl SegregationEngine {
         self.engine.step();
         self.engine.finished
     }
+
+    pub fn set_similarity(&mut self, similarity: f32) {
+        self.engine.similarity = similarity;
+    }
 }
 
 #[cfg(test)]
