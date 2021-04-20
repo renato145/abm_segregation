@@ -94,7 +94,7 @@ export const Controls: React.FC<Props> = ({ className }) => {
             : "Run"}
         </button>
       </div>
-      <div className="mt-4 flex flex-col space-y-4">
+      <div className="mt-4 grid grid-cols-1 xl:grid-cols-2 gap-2">
         <Slider
           title="Ticks per second"
           min={0}

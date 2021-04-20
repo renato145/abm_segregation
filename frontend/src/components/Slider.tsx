@@ -28,7 +28,9 @@ export const Slider: React.FC<Props> = ({
           <p className="text-sm font-bold text-gray-700 group-hover:text-gray-900">
             {title}{" "}
             {showValue !== undefined ? (
-              <span className="opacity-0 group-hover:opacity-100">({showValue})</span>
+              <span className="opacity-0 group-hover:opacity-100">
+                ({showValue})
+              </span>
             ) : null}
           </p>
         ) : null}

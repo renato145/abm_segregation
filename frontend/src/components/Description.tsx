@@ -1,5 +1,6 @@
 import React from "react";
 import { Controls } from "./Controls";
+import { Plots } from "./Plots";
 
 interface Props {
   className: string;
@@ -9,8 +10,8 @@ export const Description: React.FC<Props> = ({ className }) => {
   return (
     <div className={className}>
       <div className="flex flex-col px-2 lg:px-4 pt-2 lg:pt-3">
-        <p className="text-2xl font-bold">Segregation Model</p>
-        <p className="mt-4 text-sm text-justify">
+        <p className="text-2xl xl:text-3xl font-bold">Segregation Model</p>
+        <p className="mt-4 text-sm xl:text-base text-justify">
           TODO: Some description{" "}
           {/* This project models the behavior of two types of agents in a
           neighborhood. The orange agents and blue agents get along with one
@@ -29,7 +30,7 @@ export const Description: React.FC<Props> = ({ className }) => {
           </a> */}
         </p>
         <Controls className="mt-4" />
-        {/* <Plots /> */}
+        <Plots className="mt-4" />
       </div>
     </div>
   );
