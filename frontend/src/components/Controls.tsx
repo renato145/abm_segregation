@@ -55,14 +55,14 @@ export const Controls: React.FC<Props> = ({ className }) => {
           1-step
         </button>
         <button
-          className={`flex-1 btn ${boardState ? "bg-green-600" : ""}`}
+          className={`flex-1 btn ${boardState === BoardState.Running ? "bg-green-600 hover:bg-red-700" : ""}`}
           onClick={toogleRun}
           disabled={
             boardState === BoardState.Empty ||
             boardState === BoardState.Finished
           }
         >
-          Run
+          {boardState === BoardState.Running ? "Stop" : "Run"}
         </button>
       </div>
       <div className="mt-4 flex flex-col space-y-4">

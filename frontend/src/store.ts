@@ -25,7 +25,7 @@ export type TStore = {
 
 export const TICKS_INFO = {
   min: 0.2, // 5 seconds for 1 tick
-  max: 10, // 10 ticks per second
+  max: 20, // 20 ticks per second
 };
 
 export const useStore = create<TStore>((set, get) => ({
