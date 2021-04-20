@@ -1,5 +1,5 @@
 import React from "react";
-import { BoardState, TStore, useStore } from "../store";
+import { BoardState, TICKS_INFO, TStore, useStore } from "../store";
 import { Slider } from "./Slider";
 
 interface Props {
@@ -9,6 +9,8 @@ interface Props {
 const selector = ({
   setupEngine,
   step,
+  ticksPerSecond,
+  setTicksPerSecond,
   boardSize,
   density,
   similarity,
@@ -17,6 +19,8 @@ const selector = ({
 }: TStore) => ({
   setupEngine,
   step,
+  ticksPerSecond,
+  setTicksPerSecond,
   boardSize,
   density,
   similarity,
@@ -28,6 +32,8 @@ export const Controls: React.FC<Props> = ({ className }) => {
   const {
     setupEngine,
     step,
+    ticksPerSecond,
+    setTicksPerSecond,
     boardSize,
     density,
     similarity,
@@ -60,7 +66,14 @@ export const Controls: React.FC<Props> = ({ className }) => {
         </button>
       </div>
       <div className="mt-4 flex flex-col space-y-4">
-        <Slider title="Ticks per second" />
+        {/* Ticks per second: min-> 5 seconds per tick... max -> 10 ticks per second*/}
+        <Slider
+          title="Ticks per second"
+          min={0}
+          max={TICKS_INFO.max * 2}
+          value={TICKS_INFO.max}
+          onChange={setTicksPerSecond}
+        />
         <Slider title="Board size" />
         <Slider title="Density" />
         <Slider title="Similarity wanted" />
