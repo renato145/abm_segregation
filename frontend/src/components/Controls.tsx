@@ -72,6 +72,7 @@ export const Controls: React.FC<Props> = ({ className }) => {
           min={0}
           max={TICKS_INFO.max * 2}
           value={TICKS_INFO.max}
+          showValue={ticksPerSecond}
           onChange={setTicksPerSecond}
         />
         <Slider title="Board size" />

@@ -2,6 +2,7 @@ import React from "react";
 
 interface Props {
   title?: string;
+  showValue?: number;
   className?: string;
   min?: number;
   max?: number;
@@ -12,6 +13,7 @@ interface Props {
 
 export const Slider: React.FC<Props> = ({
   title,
+  showValue,
   className,
   min = 1,
   max = 100,
@@ -24,7 +26,10 @@ export const Slider: React.FC<Props> = ({
       <div className="group p-2 pb-3 flex flex-col bg-gray-400 bg-opacity-60 border-2 border-opacity-25 hover:border-opacity-30 border-gray-400 shadow rounded">
         {title !== undefined ? (
           <p className="text-sm font-bold text-gray-700 group-hover:text-gray-900">
-            {title}
+            {title}{" "}
+            {showValue !== undefined ? (
+              <span className="opacity-0 group-hover:opacity-100">({showValue})</span>
+            ) : null}
           </p>
         ) : null}
         <input
