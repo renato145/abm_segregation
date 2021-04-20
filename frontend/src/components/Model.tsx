@@ -22,10 +22,10 @@ type GLTFResult = GLTF & {
 };
 
 export enum ModelType {
-  Man1 = "/assets/man1.gltf",
-  Man2 = "/assets/man2.gltf",
-  // Woman1 = "/assets/woman1.gltf",
-  // Woman2 = "/assets/woman2.gltf",
+  Man1 = "man1.gltf",
+  Man2 = "man2.gltf",
+  // Woman1 = "woman1.gltf",
+  // Woman2 = "woman2.gltf",
 }
 
 type Props = { modelType: keyof typeof ModelType } & JSX.IntrinsicElements["group"];
@@ -76,7 +76,7 @@ export const Model = ({ modelType, ...props }: Props) => {
   );
 };
 
-useGLTF.preload("/assets/man1.gltf");
-useGLTF.preload("/assets/man2.gltf");
+useGLTF.preload("man1.gltf");
+useGLTF.preload("man2.gltf");
 // useGLTF.preload("/assets/woman1.gltf");
 // useGLTF.preload("/assets/woman2.gltf");
