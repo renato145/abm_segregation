@@ -45,7 +45,7 @@ export const Plots: React.FC<Props> = ({ className }) => {
           title="Number-unhappy"
           plotData={plotData}
           datakey="nUnhappy"
-          tooltipLabel="Similarity"
+          tooltipLabel="# Unhappy"
           yAxisDecimals={0}
         >
           <div className="flex flex-wrap justify-between mt-2 px-2 text-sm font-bold">

@@ -62,7 +62,14 @@ export const LinePlot: React.FC<Props> = ({
               tickSize={4}
               tickFormatter={(x: number) => x.toFixed(yAxisDecimals)}
             />
-            <Tooltip content={<CustomTooltip tooltipLabel={tooltipLabel} />} />
+            <Tooltip
+              content={
+                <CustomTooltip
+                  tooltipLabel={tooltipLabel}
+                  valueDecimals={yAxisDecimals}
+                />
+              }
+            />
           </LineChart>
         </ResponsiveContainer>
         {children}
@@ -71,17 +78,21 @@ export const LinePlot: React.FC<Props> = ({
   );
 };
 
-const CustomTooltip = ({ active, payload, label, tooltipLabel }: any) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  tooltipLabel,
+  valueDecimals,
+}: any) => {
   if (active && payload && payload.length) {
     const value = payload[0].value as number;
 
     return (
-      <div className="px-2 py-1 text-sm bg-gray-700 text-white bg-opacity-75 rounded shadow">
+      <div className="px-2 py-1 text-sm font-bold bg-gray-700 text-white bg-opacity-75 rounded shadow">
+        <p>Time: {label}</p>
         <p>
-          <span className="font-bold">Time:</span> {label}
-        </p>
-        <p>
-          <span className="font-bold">{tooltipLabel}:</span> {value.toFixed(2)}
+          {tooltipLabel}: {value.toFixed(valueDecimals)}
         </p>
       </div>
     );
