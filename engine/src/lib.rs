@@ -42,8 +42,19 @@ impl Engine {
         self.agents.len()
     }
 
-    fn all_happy(&self) -> bool {
+    pub fn all_happy(&self) -> bool {
         self.agents.iter().all(|o| o.happy)
+    }
+
+    pub fn get_unhappy_ratio(&self) -> f32 {
+        let unhappy_count: usize = self.agents.iter().map(|o| !o.happy as usize).sum();
+        unhappy_count as f32 / self.n_agents() as f32
+    }
+
+    pub fn get_similar_nearby_ratio(&self) -> f32 {
+        let similar_nearby: usize = self.agents.iter().map(|o| o.similar_nearby).sum();
+        let total_nearby: usize = self.agents.iter().map(|o| o.total_nearby).sum();
+        (similar_nearby as f32) / (total_nearby as f32)
     }
 
     fn get_agent_at(&self, x: usize, y: usize) -> Option<&Agent> {
@@ -53,7 +64,6 @@ impl Engine {
             .next()
     }
 
-    /// Update a single `Agent`
     fn update_agent(&mut self, idx: usize) {
         let agent = self.agents.get(idx).unwrap();
         let neighboor = agent
@@ -73,9 +83,10 @@ impl Engine {
         let happy = similar_nearby as f32 >= (self.similarity * total_nearby as f32);
         let agent = self.agents.get_mut(idx).unwrap();
         agent.happy = happy;
+        agent.similar_nearby = similar_nearby;
+        agent.total_nearby = total_nearby;
     }
 
-    /// Update all `Agent`s
     fn update_agents(&mut self) {
         for i in 0..self.n_agents() {
             self.update_agent(i);
@@ -108,13 +119,15 @@ impl Engine {
         }
     }
 
-    pub fn step(&mut self) {
+    /// Does one step and returns a summary of the state: (similar_nearby_ratio, unhappy_ratio)
+    pub fn step(&mut self) -> (f32, f32) {
         if self.all_happy() {
             self.finished = true;
-            return;
+        } else {
+            self.move_unhappy_agents();
+            self.update_agents();
         }
-        self.move_unhappy_agents();
-        self.update_agents();
+        (self.get_similar_nearby_ratio(), self.get_unhappy_ratio())
     }
 }
 
@@ -203,11 +216,18 @@ mod tests {
     fn step() {
         let mut engine = Engine::new(8, 8, 0.5, 0.7);
         for _ in 0..100 {
-            engine.step();
+            let (similar_nearby, unhappy_ratio) = engine.step();
+            println!(
+                "similar_nearby: {:.2} | unhappy_ratio: {:.2}",
+                similar_nearby, unhappy_ratio
+            );
             let x = engine.agents.iter().map(|o| o.x).max().unwrap();
             let y = engine.agents.iter().map(|o| o.y).max().unwrap();
             assert!(x < 8, "x < 8 (x={})", x);
             assert!(y < 8, "y < 8 (y={})", y);
+            if engine.finished {
+                break;
+            }
         }
     }
 }
