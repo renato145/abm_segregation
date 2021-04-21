@@ -7,7 +7,8 @@ interface Props {
 export const Plots: React.FC<Props> = ({className}) => {
   return (
     <div className={className}>
-      TODO: Plots
+      <p>Plot 1: Percent similar (# agents) (% similar)</p>
+      <p>Plot 2: Number-unhappy (num-unhappy) (%unhappy)</p>
     </div>
   );
 };
