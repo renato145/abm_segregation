@@ -71,7 +71,6 @@ impl Engine {
             .sum();
         let total_nearby = similar_nearby + other_nearby;
         let happy = similar_nearby as f32 >= (self.similarity * total_nearby as f32);
-
         let agent = self.agents.get_mut(idx).unwrap();
         agent.happy = happy;
     }
@@ -125,6 +124,8 @@ pub struct Agent {
     pub y: usize,
     pub team: AgentType,
     pub happy: bool,
+    pub similar_nearby: usize,
+    pub total_nearby: usize,
 }
 
 impl Agent {
@@ -135,6 +136,8 @@ impl Agent {
             y,
             team: AgentType::new_random(rng),
             happy: false,
+            similar_nearby: 0,
+            total_nearby: 0,
         }
     }
 
@@ -181,12 +184,9 @@ mod tests {
 
     #[test]
     fn get_neighboor() {
-        let agent1 = Agent {
-            x: 0,
-            y: 0,
-            happy: false,
-            team: AgentType::Man1,
-        };
+        let mut agent1 = Agent::new(8, 8, &mut rand::thread_rng());
+        agent1.x = 0;
+        agent1.y = 0;
         let mut agent2 = agent1.clone();
         agent2.x = 3;
         agent2.y = 3;
