@@ -77,7 +77,7 @@ const CanvasContent: React.FC = () => {
             <Model
               key={i}
               scale={0.25}
-              modelType={modelTypes[i] as any}
+              modelType={modelTypes[i]}
               position={[
                 o[0] * PlaneConfig.tileSize,
                 0,

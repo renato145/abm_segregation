@@ -1,5 +1,5 @@
 import create from "zustand";
-import { SegregationEngine } from "engine-wasm";
+import { SegregationEngine, TPositions, TAgentType } from "engine-wasm";
 
 export enum BoardState {
   Empty,
@@ -7,24 +7,6 @@ export enum BoardState {
   Running,
   Finished,
 }
-
-export type TStore = {
-  engine?: SegregationEngine;
-  ticksPerSecond: number;
-  setTicksPerSecond: (x: number) => void;
-  boardSize: number;
-  setBoardSize: (x: number) => void;
-  density: number;
-  setDensity: (x: number) => void;
-  similarity: number;
-  setSimilarity: (x: number) => void;
-  positions: number[][];
-  modelTypes: string[];
-  boardState: BoardState;
-  setupEngine: () => void;
-  step: () => void;
-  toogleRun: () => void;
-};
 
 export const TICKS_INFO = {
   min: 0.2, // 5 seconds for 1 tick
@@ -48,6 +30,24 @@ export const SIMILARITY_DEFAULTS = {
   min: 0,
   max: 1,
   default: 0.75,
+};
+
+export type TStore = {
+  engine?: SegregationEngine;
+  ticksPerSecond: number;
+  setTicksPerSecond: (x: number) => void;
+  boardSize: number;
+  setBoardSize: (x: number) => void;
+  density: number;
+  setDensity: (x: number) => void;
+  similarity: number;
+  setSimilarity: (x: number) => void;
+  positions: TPositions;
+  modelTypes: TAgentType;
+  boardState: BoardState;
+  setupEngine: () => void;
+  step: () => void;
+  toogleRun: () => void;
 };
 
 export const useStore = create<TStore>((set, get) => ({
@@ -96,7 +96,7 @@ export const useStore = create<TStore>((set, get) => ({
   step: () => {
     const engine = get().engine;
     if (engine === undefined) return;
-    const finished = engine.step();
+    const { finished, similar_nearby_ratio, unhappy_ratio } = engine.step();
     set(({ boardState }) => ({
       positions: engine.get_positions(),
       boardState: finished ? BoardState.Finished : boardState,

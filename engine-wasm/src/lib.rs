@@ -1,4 +1,5 @@
 use engine::Engine;
+use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -21,34 +22,70 @@ impl SegregationEngine {
         }
     }
 
-    pub fn get_positions(&self) -> JsValue {
+    pub fn get_positions(&self) -> TPositions {
         let positions = self
             .engine
             .agents
             .iter()
             .map(|o| (o.x, o.y))
             .collect::<Vec<_>>();
-        JsValue::from_serde(&positions).unwrap()
+        JsValue::from_serde(&positions).unwrap().into()
     }
 
-    pub fn get_agent_types(&self) -> JsValue {
+    pub fn get_agent_types(&self) -> TAgentType {
         let types = self
             .engine
             .agents
             .iter()
             .map(|o| o.team.clone())
             .collect::<Vec<_>>();
-        JsValue::from_serde(&types).unwrap()
+        JsValue::from_serde(&types).unwrap().into()
     }
 
-    pub fn step(&mut self) -> bool {
-        self.engine.step();
-        self.engine.finished
+    pub fn step(&mut self) -> TStepReport {
+        let (similar_nearby_ratio, unhappy_ratio) = self.engine.step();
+        let report = StepReport {
+            similar_nearby_ratio,
+            unhappy_ratio,
+            finished: self.engine.finished,
+        };
+        JsValue::from_serde(&report).unwrap().into()
     }
 
     pub fn set_similarity(&mut self, similarity: f32) {
         self.engine.similarity = similarity;
     }
+}
+
+#[wasm_bindgen(typescript_custom_section)]
+const CustomTSTypes: &'static str = r#"
+export type TPositions = number[][];
+
+export type TAgentType = ("Man1" | "Man2")[];
+
+export interface TStepReport {
+    similar_nearby_ratio: number;
+    unhappy_ratio: number;
+    finished: boolean;
+}"#;
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(typescript_type = "TPositions")]
+    pub type TPositions;
+
+    #[wasm_bindgen(typescript_type = "TAgentType")]
+    pub type TAgentType;
+
+    #[wasm_bindgen(typescript_type = "TStepReport")]
+    pub type TStepReport;
+}
+
+#[derive(Serialize)]
+struct StepReport {
+    similar_nearby_ratio: f32,
+    unhappy_ratio: f32,
+    finished: bool,
 }
 
 #[cfg(test)]

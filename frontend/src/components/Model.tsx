@@ -6,6 +6,7 @@ import * as THREE from "three";
 import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import { TAgentType } from "engine-wasm";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -21,18 +22,18 @@ type GLTFResult = GLTF & {
   };
 };
 
-export enum ModelType {
-  Man1 = "man1.gltf",
-  Man2 = "man2.gltf",
-  // Woman1 = "woman1.gltf",
-  // Woman2 = "woman2.gltf",
-}
+const ModelLocation: Record<TAgentType[0], string> = {
+  "Man1": "man1.gltf",
+  "Man2": "man2.gltf",
+};
 
-type Props = { modelType: keyof typeof ModelType } & JSX.IntrinsicElements["group"];
+type Props = {
+  modelType: keyof typeof ModelLocation;
+} & JSX.IntrinsicElements["group"];
 
 export const Model = ({ modelType, ...props }: Props) => {
   const group = useRef<THREE.Group>();
-  const { nodes } = useGLTF(ModelType[modelType]) as GLTFResult;
+  const { nodes } = useGLTF(ModelLocation[modelType]) as GLTFResult;
 
   return (
     <group ref={group} {...props} dispose={null} castShadow>
@@ -76,7 +77,5 @@ export const Model = ({ modelType, ...props }: Props) => {
   );
 };
 
-useGLTF.preload("man1.gltf");
-useGLTF.preload("man2.gltf");
-// useGLTF.preload("/assets/woman1.gltf");
-// useGLTF.preload("/assets/woman2.gltf");
+useGLTF.preload(ModelLocation["Man1"]);
+useGLTF.preload(ModelLocation["Man2"]);
