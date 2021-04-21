@@ -36,6 +36,7 @@ export const Plots: React.FC<Props> = ({ className }) => {
         title="Global similarity"
         plotData={plotData}
         datakey="similarNearbyRatio"
+        tooltipLabel="Similarity"
       />
       {/* <div>
         <p>Plot 1: Percent similar (# agents) (% similar)</p>

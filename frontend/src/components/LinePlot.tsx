@@ -15,9 +15,15 @@ interface Props {
   title: string;
   plotData: TStore["plotData"];
   datakey: keyof TStore["plotData"][0];
+  tooltipLabel: string;
 }
 
-export const LinePlot: React.FC<Props> = ({ title, plotData, datakey }) => {
+export const LinePlot: React.FC<Props> = ({
+  title,
+  plotData,
+  datakey,
+  tooltipLabel,
+}) => {
   return (
     <div className="p-2 bg-gray-400 bg-opacity-60 rounded ">
       <p className="font-bold text-gray-700 text-center">{title}</p>
@@ -50,9 +56,27 @@ export const LinePlot: React.FC<Props> = ({ title, plotData, datakey }) => {
             tickSize={4}
             tickFormatter={(x: number) => x.toFixed(1)}
           />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip tooltipLabel={tooltipLabel} />} />
         </LineChart>
       </ResponsiveContainer>
     </div>
   );
+};
+
+const CustomTooltip = ({ active, payload, label, tooltipLabel }: any) => {
+  if (active && payload && payload.length) {
+    const value = payload[0].value as number;
+
+    return (
+      <div className="px-2 py-1 text-sm bg-gray-700 text-white bg-opacity-75 rounded shadow">
+        <p>
+          <span className="font-bold">Time:</span> {label}
+        </p>
+        <p>
+          <span className="font-bold">{tooltipLabel}:</span> {value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
 };
