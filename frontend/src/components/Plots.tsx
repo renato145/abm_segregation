@@ -32,12 +32,21 @@ export const Plots: React.FC<Props> = ({ className }) => {
 
   return (
     <div className={className}>
-      <LinePlot
-        title="Global similarity"
-        plotData={plotData}
-        datakey="similarNearbyRatio"
-        tooltipLabel="Similarity"
-      />
+      <div className="flex flex-col">
+        <LinePlot
+          title="Global similarity"
+          plotData={plotData}
+          datakey="similarNearbyRatio"
+          tooltipLabel="Similarity"
+        />
+        <LinePlot
+          className="mt-4"
+          title="Number-unhappy"
+          plotData={plotData}
+          datakey="nUnhappy"
+          tooltipLabel="Similarity"
+        />
+      </div>
       {/* <div>
         <p>Plot 1: Percent similar (# agents) (% similar)</p>
         <p># agents: {n_agents}</p>

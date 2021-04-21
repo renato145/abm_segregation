@@ -94,8 +94,10 @@ const CanvasContent: React.FC = () => {
 
 export const BaseCanvas: React.FC<Props> = ({ className }) => {
   return (
-    <Canvas className={className} shadows>
-      <CanvasContent />
-    </Canvas>
+    <div className={className}>
+      <Canvas shadows>
+        <CanvasContent />
+      </Canvas>
+    </div>
   );
 };
