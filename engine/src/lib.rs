@@ -119,7 +119,7 @@ impl Engine {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Agent {
     pub x: usize,
     pub y: usize,
@@ -181,10 +181,22 @@ mod tests {
 
     #[test]
     fn get_neighboor() {
-        let engine = Engine::new(8, 8, 0.5, 0.7);
-        let tst = &engine.agents[0];
-        let res = tst.get_neighboor(1, engine.rows, engine.cols);
-        println!("Agent ({} {}): {:?}", tst.x, tst.y, res);
+        let agent1 = Agent {
+            x: 0,
+            y: 0,
+            happy: false,
+            team: AgentType::Man1,
+        };
+        let mut agent2 = agent1.clone();
+        agent2.x = 3;
+        agent2.y = 3;
+
+        let res1 = agent1.get_neighboor(1, 8, 8);
+        let res2 = agent2.get_neighboor(1, 8, 8);
+        println!("Agent ({:?}): {:?}", agent1, res1);
+        println!("Agent ({:?}): {:?}", agent2, res2);
+        assert_eq!(res1.len(), 3);
+        assert_eq!(res2.len(), 8);
     }
 
     #[test]
