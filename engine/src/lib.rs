@@ -46,9 +46,8 @@ impl Engine {
         self.agents.iter().all(|o| o.happy)
     }
 
-    pub fn get_unhappy_ratio(&self) -> f32 {
-        let unhappy_count: usize = self.agents.iter().map(|o| !o.happy as usize).sum();
-        unhappy_count as f32 / self.n_agents() as f32
+    pub fn n_unhappy(&self) -> usize {
+        self.agents.iter().map(|o| !o.happy as usize).sum()
     }
 
     pub fn get_similar_nearby_ratio(&self) -> f32 {
@@ -120,14 +119,14 @@ impl Engine {
     }
 
     /// Does one step and returns a summary of the state: (similar_nearby_ratio, unhappy_ratio)
-    pub fn step(&mut self) -> (f32, f32) {
+    pub fn step(&mut self) -> (f32, usize) {
         if self.all_happy() {
             self.finished = true;
         } else {
             self.move_unhappy_agents();
             self.update_agents();
         }
-        (self.get_similar_nearby_ratio(), self.get_unhappy_ratio())
+        (self.get_similar_nearby_ratio(), self.n_unhappy())
     }
 }
 

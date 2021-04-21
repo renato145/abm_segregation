@@ -22,6 +22,18 @@ impl SegregationEngine {
         }
     }
 
+    pub fn n_agents(&self) -> usize {
+        self.engine.n_agents()
+    }
+
+    pub fn n_unhappy(&self) -> usize {
+        self.engine.n_unhappy()
+    }
+
+    pub fn get_similar_nearby_ratio(&self) -> f32 {
+        self.engine.get_similar_nearby_ratio()
+    }
+
     pub fn get_positions(&self) -> TPositions {
         let positions = self
             .engine
@@ -43,10 +55,10 @@ impl SegregationEngine {
     }
 
     pub fn step(&mut self) -> TStepReport {
-        let (similar_nearby_ratio, unhappy_ratio) = self.engine.step();
+        let (similar_nearby_ratio, n_unhappy) = self.engine.step();
         let report = StepReport {
             similar_nearby_ratio,
-            unhappy_ratio,
+            n_unhappy,
             finished: self.engine.finished,
         };
         JsValue::from_serde(&report).unwrap().into()
@@ -65,7 +77,7 @@ export type TAgentType = ("Man1" | "Man2")[];
 
 export interface TStepReport {
     similar_nearby_ratio: number;
-    unhappy_ratio: number;
+    n_unhappy: number;
     finished: boolean;
 }"#;
 
@@ -84,7 +96,7 @@ extern "C" {
 #[derive(Serialize)]
 struct StepReport {
     similar_nearby_ratio: f32,
-    unhappy_ratio: f32,
+    n_unhappy: usize,
     finished: bool,
 }
 

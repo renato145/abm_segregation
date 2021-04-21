@@ -34,6 +34,7 @@ export const SIMILARITY_DEFAULTS = {
 
 export type TStore = {
   engine?: SegregationEngine;
+  n_agents: number;
   ticksPerSecond: number;
   setTicksPerSecond: (x: number) => void;
   boardSize: number;
@@ -48,9 +49,13 @@ export type TStore = {
   setupEngine: () => void;
   step: () => void;
   toogleRun: () => void;
+  similar_nearby_ratio_history: number[];
+  n_unhappy: number;
+  n_unhappy_history: number[];
 };
 
 export const useStore = create<TStore>((set, get) => ({
+  n_agents: 0,
   ticksPerSecond: TICKS_INFO.default,
   setTicksPerSecond: (x) => {
     const ticksPerSecond =
@@ -83,23 +88,31 @@ export const useStore = create<TStore>((set, get) => ({
         density,
         similarity
       );
-      const positions = engine.get_positions();
-      const modelTypes = engine.get_agent_types();
+      const n_unhappy = engine.n_unhappy();
+
       return {
         engine,
-        positions,
-        modelTypes,
+        n_agents: engine.n_agents(),
+        positions: engine.get_positions(),
+        modelTypes: engine.get_agent_types(),
         boardState: BoardState.Stopped,
+        similar_nearby_ratio_history: [engine.get_similar_nearby_ratio()],
+        n_unhappy,
+        n_unhappy_history: [n_unhappy],
       };
     });
   },
   step: () => {
     const engine = get().engine;
     if (engine === undefined) return;
-    const { finished, similar_nearby_ratio, unhappy_ratio } = engine.step();
-    set(({ boardState }) => ({
+    const { finished, similar_nearby_ratio, n_unhappy } = engine.step();
+    set(({ boardState, similar_nearby_ratio_history, n_unhappy_history }) => ({
       positions: engine.get_positions(),
       boardState: finished ? BoardState.Finished : boardState,
+      similar_nearby_ratio_history: similar_nearby_ratio_history.concat(
+        similar_nearby_ratio
+      ),
+      n_unhappy_history: n_unhappy_history.concat(n_unhappy),
     }));
   },
   toogleRun: () =>
@@ -111,4 +124,7 @@ export const useStore = create<TStore>((set, get) => ({
           ? BoardState.Stopped
           : boardState,
     })),
+  similar_nearby_ratio_history: [],
+  n_unhappy: 0,
+  n_unhappy_history: [],
 }));
