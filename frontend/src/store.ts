@@ -34,7 +34,7 @@ export const TICKS_INFO = {
 
 export const BOARD_SIZE_DEFAULTS = {
   min: 4,
-  max: 30,
+  max: 25,
   default: 15,
 };
 
@@ -47,7 +47,7 @@ export const DENSITY_DEFAULTS = {
 export const SIMILARITY_DEFAULTS = {
   min: 0,
   max: 1,
-  default: 0.3,
+  default: 0.75,
 };
 
 export const useStore = create<TStore>((set, get) => ({
