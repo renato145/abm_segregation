@@ -11,7 +11,7 @@ interface Props {
 export const Description: React.FC<Props> = ({ className }) => {
   return (
     <div className={className}>
-      <div className="flex flex-col px-2 lg:px-4 pt-3 lg:pt-4">
+      <div className="flex flex-col px-2 lg:px-4 py-3 lg:pt-4">
         <p className="text-2xl xl:text-3xl font-bold">Segregation Model</p>
         <Disclosure
           as="div"

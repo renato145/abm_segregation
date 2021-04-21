@@ -16,6 +16,7 @@ interface Props {
   plotData: TStore["plotData"];
   datakey: keyof TStore["plotData"][0];
   tooltipLabel: string;
+  yAxisDecimals: number;
   className?: string;
 }
 
@@ -24,7 +25,9 @@ export const LinePlot: React.FC<Props> = ({
   plotData,
   datakey,
   tooltipLabel,
+  yAxisDecimals,
   className,
+  children,
 }) => {
   return (
     <div className={className}>
@@ -32,7 +35,7 @@ export const LinePlot: React.FC<Props> = ({
         <p className="font-bold text-gray-700 text-center">{title}</p>
         <ResponsiveContainer
           className="mt-1.5 bg-white w-full rounded"
-          height={200}
+          minHeight={150}
         >
           <LineChart
             data={plotData}
@@ -57,11 +60,12 @@ export const LinePlot: React.FC<Props> = ({
               fontSize={11}
               width={20}
               tickSize={4}
-              tickFormatter={(x: number) => x.toFixed(1)}
+              tickFormatter={(x: number) => x.toFixed(yAxisDecimals)}
             />
             <Tooltip content={<CustomTooltip tooltipLabel={tooltipLabel} />} />
           </LineChart>
         </ResponsiveContainer>
+        {children}
       </div>
     </div>
   );
