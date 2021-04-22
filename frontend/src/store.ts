@@ -110,6 +110,7 @@ export const useStore = create<TStore>((set, get) => ({
     if (engine === undefined) return;
     const { finished, similar_nearby_ratio, n_unhappy } = engine.step();
     set(({ boardState, plotData }) => ({
+      nUnhappy: n_unhappy,
       positions: engine.get_positions(),
       boardState: finished ? BoardState.Finished : boardState,
       plotData: plotData.concat({
