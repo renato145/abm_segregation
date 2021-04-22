@@ -73,16 +73,13 @@ const CanvasContent: React.FC = () => {
       <Suspense fallback={null}>
         <group position={[-offset, 0, -offset]}>
           <FloorPlane boardSize={boardSize} {...PlaneConfig} />
-          {positions.map((o, i) => (
+          {positions.map(({ x, y, is_happy }, i) => (
             <Model
               key={i}
               scale={0.25}
               modelType={modelTypes[i]}
-              position={[
-                o[0] * PlaneConfig.tileSize,
-                0,
-                o[1] * PlaneConfig.tileSize,
-              ]}
+              position={[x * PlaneConfig.tileSize, 0, y * PlaneConfig.tileSize]}
+              isHappy={is_happy}
             />
           ))}
         </group>

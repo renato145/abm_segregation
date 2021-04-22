@@ -39,7 +39,11 @@ impl SegregationEngine {
             .engine
             .agents
             .iter()
-            .map(|o| (o.x, o.y))
+            .map(|o| Position {
+                x: o.x,
+                y: o.y,
+                is_happy: o.happy,
+            })
             .collect::<Vec<_>>();
         JsValue::from_serde(&positions).unwrap().into()
     }
@@ -71,7 +75,11 @@ impl SegregationEngine {
 
 #[wasm_bindgen(typescript_custom_section)]
 const CustomTSTypes: &'static str = r#"
-export type TPositions = number[][];
+export type TPositions = {
+    x: number;
+    y: number;
+    is_happy: boolean;
+}[];
 
 export type TAgentType = ("Man1" | "Man2")[];
 
@@ -91,6 +99,13 @@ extern "C" {
 
     #[wasm_bindgen(typescript_type = "TStepReport")]
     pub type TStepReport;
+}
+
+#[derive(Serialize)]
+struct Position {
+    x: usize,
+    y: usize,
+    is_happy: bool,
 }
 
 #[derive(Serialize)]
